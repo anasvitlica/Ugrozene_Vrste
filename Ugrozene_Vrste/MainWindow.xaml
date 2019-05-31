@@ -1,0 +1,305 @@
+﻿<Window x:Class="Ugrozene_Vrste.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:Ugrozene_Vrste"
+        
+        mc:Ignorable="d"
+        Title="Ugrožene vrste" Height="680" Width="1200" WindowStartupLocation="CenterScreen"
+        Icon="images/284-512.png" WindowStyle="None" ResizeMode="NoResize">
+
+
+    <Window.Background>
+        <ImageBrush ImageSource="images/blurred.jpg"></ImageBrush>
+    </Window.Background>
+
+    <Window.Resources>
+
+        <Style x:Key="RoundCorner" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="15" BorderBrush="Black" BorderThickness="1">
+                                <Border.Background>
+                                    <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                        <RadialGradientBrush.RelativeTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform CenterX="0.5" CenterY="0.5" 
+                                                        ScaleX="1.5" ScaleY="1.5"/>
+                                                <TranslateTransform X="0.02" Y="0.3"/>
+                                            </TransformGroup>
+                                        </RadialGradientBrush.RelativeTransform>
+                                        <GradientStop Offset="1" Color="#FF6BD14D"/>
+                                        <GradientStop Offset="0.3" Color="#FFFFFBB0"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Medium">
+                                </ContentPresenter>
+                            </Border>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#FFFFFBB0" Offset="1"/>
+                                            <GradientStop Color="#FF6BD14D" Offset="0.3"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF33962B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <Style x:Key="ListViewStyle" TargetType="ListView">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontStyle" Value="Oblique" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+    </Window.Resources>
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="20" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Width="20" Background="Transparent" BorderBrush="Transparent" Click="Exit_Click">
+                <Image Source="images/exit.png"></Image>
+            </Button>
+        </StackPanel>
+        <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="MS Gothic" FontStyle="Oblique">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"></DockPanel>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="File">
+                <MenuItem Header="Dodavanje">
+                    <MenuItem Header="Tip vrste" Click="DodajTipVrste_Click"></MenuItem>
+                    <MenuItem Header="Vrsta" Click="DodajVrstu_Click"></MenuItem>
+                    <MenuItem Header="Etiketa" Click="DodajEtiketu_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Brisanje svih...">
+                    <MenuItem Header="Tipova vrste" Click="BrisanjeSvihTipovaVrste_Click"></MenuItem>
+                    <MenuItem Header="Vrsta" Click="BrisanjeSvihVrsta_Click"></MenuItem>
+                    <MenuItem Header="Etiketa" Click="BrisanjeSvihEtiketa_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Izmena" Click="Edit_Click"></MenuItem>
+                <Separator/>
+                <MenuItem Header="Učitavanje...">
+                    <MenuItem Header="Tipova vrste"></MenuItem>
+                    <MenuItem Header="Vrsta"></MenuItem>
+                    <MenuItem Header="Etiketa"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Čuvanje"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit"></MenuItem>
+            <MenuItem Header="View"></MenuItem>
+            <Separator Width="1058" Background="Transparent"></Separator>
+
+
+        </Menu>
+        <StackPanel x:Name="tools" DockPanel.Dock="Top" Orientation="Horizontal" Background="Transparent" Height="40" 
+                    Margin="5,5,5,0" HorizontalAlignment="Center">
+            <Button x:Name="sveBtn" Width="200" Foreground="Black" Margin="0,0,20,0" 
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" Click="SveVrste_Click"
+                     Style="{DynamicResource RoundCorner}" >
+                <Button.ToolTip>
+                    <StackPanel Orientation="Vertical" Width="200" ScrollViewer.CanContentScroll="True">
+                        <TextBlock Background="LightYellow" TextWrapping="Wrap"
+                                   Text="Tabelarni prikaz svih unetih tipova vrsta, vrsta i etiketa."></TextBlock>
+                        <Separator/>
+                        <TextBlock>Za još informacija pritisnite F1.</TextBlock>
+                    </StackPanel>
+                </Button.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/list.png" Height="25" Margin="0,0,5,0"></Image>
+                    <TextBlock VerticalAlignment="Center">Pregled</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" 
+                    Click="DodajTipVrste_Click" Style="{DynamicResource RoundCorner}">
+                <Button.ToolTip>
+                    <StackPanel Orientation="Vertical" Width="200">
+                        <TextBlock Background="LightYellow" TextWrapping="Wrap" 
+                                   Text="Kreiranje novog tipa vrste. Nakon dodavanja tip će biti vidljiv u tabeli (Pregled), kao i prilikom kreiranja nove vrste."></TextBlock>
+                        <Separator/>
+                        <TextBlock>Za još informacija pritisnite F1.</TextBlock>
+                    </StackPanel>
+                </Button.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/paws3.png" Height="25" Margin="0,0,5,0"></Image>
+                    <TextBlock VerticalAlignment="Center">Dodavanje tipa vrste</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black"  Margin="0,0,20,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" Click="DodajVrstu_Click"
+                    Style="{DynamicResource RoundCorner}">
+                <Button.ToolTip>
+                    <StackPanel Orientation="Vertical" Width="200">
+                        <TextBlock Background="LightYellow" TextWrapping="Wrap" 
+                                   Text="Kreiranje nove vrste. Nakon dodavanja vrsta će biti vidljiva u tabeli (Pregled), kao i u listi na početnoj stranici."></TextBlock>
+                        <Separator/>
+                        <TextBlock>Za još informacija pritisnite F1.</TextBlock>
+                    </StackPanel>
+                </Button.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/pawbw11.png" Height="25" Margin="0,0,5,0"></Image>
+                    <TextBlock VerticalAlignment="Center">Dodavanje vrste</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="200" Foreground="Black" Margin="0,0,20,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent" 
+                    Click="DodajEtiketu_Click" Style="{DynamicResource RoundCorner}">
+                <Button.ToolTip>
+                    <StackPanel Orientation="Vertical" Width="200">
+                        <TextBlock Background="LightYellow" TextWrapping="Wrap" 
+                                   Text="Kreiranje nove etikete. Nakon dodavanja etiketa će biti vidljiva u tabeli (Pregled), kao i prilikom kreiranja nove vrste."></TextBlock>
+                        <Separator/>
+                        <TextBlock>Za još informacija pritisnite F1.</TextBlock>
+                    </StackPanel>
+                </Button.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/tag.png" Height="25" Margin="0,0,5,0"></Image>
+                    <TextBlock VerticalAlignment="Center">Dodavanje etikete</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Background="{StaticResource TransparentWhite}" Width="175" Foreground="Black" Margin="0,0,2,0"
+                    FontFamily="MS Gothic" FontStyle="Oblique" FontSize="16" BorderBrush="Transparent"
+                    Style="{DynamicResource RoundCorner}">
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/help.png" Height="25" Margin="0,0,5,0"></Image>
+                    <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Pomoć</TextBlock>
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Width="1190" Margin="0,10,0,10">
+            <StackPanel x:Name="left" Orientation="Vertical" Background="{StaticResource TransparentWhite}" Width="215" Margin="0,0,10,0">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" Margin="5">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Učitavanje podataka"
+                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
+                                        Style="{DynamicResource RoundCorner}" Click="Import_Click">
+                                <Image Source="images/import.png" Height="20"></Image>
+                            </Button>
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Čuvanje podataka"
+                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
+                                        Style="{DynamicResource RoundCorner}" Click="Export_Click">
+                                <Image Source="images/save.png" Height="20"></Image>
+                            </Button>
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Izmena vrste"
+                                        Background="{StaticResource TransparentWhite}"  Margin="0,0,2,0"
+                                        Click="Edit_Click" Style="{DynamicResource RoundCorner}">
+                                <Image Source="images/edit.png" Height="20"></Image>
+                            </Button>
+                            <Button Height="30" Width="30" ToolTip="Brisanje vrste"
+                                        Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
+                                        Click="Delete_Click" Style="{DynamicResource RoundCorner}">
+                                <Image Source="images/delete.png" Height="20"></Image>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="txtPRETRAGA" Text="Pretraga..."  Height="25" Width="165" FontFamily="MS Gothic" 
+                                         FontStyle="Oblique" FontSize="16" Margin="2,2,0,2" VerticalAlignment="Center"
+                                         Background="{StaticResource TransparentWhite}" GotFocus="TxtPRETRAGA_GotFocus" 
+                                         Cursor="IBeam" l:HelpProvider.HelpKey="pocetna">
+                            </TextBox>
+                            <Button Height="30" Width="30" BorderBrush="Transparent" ToolTip="Pretraga"
+                                        Style="{DynamicResource RoundCorner}">
+                                <Image Source="images/find.png" Height="20"></Image>
+                            </Button>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <ListView x:Name="lista" DockPanel.Dock="Bottom" ItemsSource="{Binding Vrste, UpdateSourceTrigger=PropertyChanged}" 
+                                  Style="{StaticResource ResourceKey=ListViewStyle}" Width="190" Height="500"
+                                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  Background="{StaticResource TransparentWhite}" MouseDoubleClick="Lista_MouseDoubleClick"
+                                  PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown" PreviewMouseMove="Lista_PreviewMouseMove">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                                <Image Width="40" Height="40" Source="{Binding Ikonica}"/>
+                                                <TextBlock Width="137" VerticalAlignment="Center" Text="{Binding Ime}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </StackPanel>
+            <ListBox ToolTip="Prevucite vrstu iz liste levo na mapu."
+                         x:Name="Mapa" MinWidth="970" MinHeight="580" 
+                         SelectionMode="Single" ItemsSource="{Binding Path= NaMapi}"  
+                         AllowDrop="True" DragEnter="Mapa_DragEnter" Drop="Mapa_Drop" 
+                         PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
+                         PreviewMouseMove="Mapa_PreviewMouseMove"
+                         MouseDoubleClick="Mapa_MouseDoubleClick">
+                <ListBox.Template>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Canvas x:Name="CanvasPanel" IsItemsHost="True">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="Images/worldMap1.png"/>
+                            </Canvas.Background>
+                        </Canvas>
+                    </ControlTemplate>
+                </ListBox.Template >
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Canvas.Left" Value="{Binding Point.X}"></Setter>
+                        <Setter Property="Canvas.Top" Value="{Binding Point.Y}"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                            <Grid>
+                                <Image Width="20" Height="20" Source="{Binding Ikonica}" VerticalAlignment="Center" />
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </StackPanel>
+
+
+    </DockPanel>
+</Window>
