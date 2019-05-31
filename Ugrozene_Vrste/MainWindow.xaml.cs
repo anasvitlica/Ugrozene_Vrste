@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -62,10 +63,8 @@ namespace Ugrozene_Vrste
         private ObservableCollection<Vrsta> Vrste { get; set; }
         Point startPoint = new Point();
         bool isDragging = false;
-
         private DragAndDropHandler DDHandler { get; set; }
 
-        //OVO JE DOBRA VERZIJA
         public MainWindow()
         {
             InitializeComponent();
@@ -76,11 +75,9 @@ namespace Ugrozene_Vrste
 
             //punjenje liste
             setVrsteItems();
-
-            //lista.ItemsSource = SpisakVrsta.Vrste.Values;
         }
 
-
+        #region Clicks
         private void SveVrste_Click(object sender, RoutedEventArgs e)
         {
             Pregled p = new Pregled(this);
@@ -115,23 +112,6 @@ namespace Ugrozene_Vrste
             RadSaTipomVrste dtv = new RadSaTipomVrste(this, false, null);
             dtv.ShowDialog();
         }
-
-        //Metoda koja puni listu stringovima sa imenima vrsta
-        public void setVrsteItems()
-        {
-            this.lista.ItemsSource = null;
-            Vrste = new ObservableCollection<Vrsta>();
-            foreach (Vrsta v in SpisakVrsta.Vrste.Values)
-            {
-                if (NaMapi.Contains(v))
-                {
-                    continue;
-                }
-                Vrste.Add(v);
-            }
-            this.lista.ItemsSource = Vrste;
-        }
-
 
         //Izmena vrsta
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -179,6 +159,67 @@ namespace Ugrozene_Vrste
 
         }
 
+        private void BrisanjeSvihVrsta_Click(object sender, RoutedEventArgs e)
+        {
+            String message = "Da li ste sigurni da želite da obrišete sve unete vrste?\n\n";
+            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih vrsta", MessageBoxButton.YesNo);
+
+            if (mbr == MessageBoxResult.Yes)
+            {
+                SpisakVrsta.Vrste = null;
+                SpisakVrsta.Vrste = new Dictionary<string, Vrsta>();
+                setVrsteItems();
+            }
+        }
+
+        private void BrisanjeSvihTipovaVrste_Click(object sender, RoutedEventArgs e)
+        {
+            String message = "Da li ste sigurni da želite da obrišete sve unete tipove vrsta?\n\n";
+            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih tipova vrsta", MessageBoxButton.YesNo);
+
+            if (mbr == MessageBoxResult.Yes)
+            {
+                SpisakTipovaVrste.TipoviVrste = null;
+                SpisakTipovaVrste.TipoviVrste = new Dictionary<string, TipVrste>();
+                setVrsteItems();
+            }
+        }
+
+        private void BrisanjeSvihEtiketa_Click(object sender, RoutedEventArgs e)
+        {
+            String message = "Da li ste sigurni da želite da obrišete sve unete etikete?\n\n";
+            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih etiketa", MessageBoxButton.YesNo);
+
+            if (mbr == MessageBoxResult.Yes)
+            {
+                SpisakEtiketa.Etikete = null;
+                SpisakEtiketa.Etikete = new Dictionary<string, Etiketa>();
+
+                foreach (KeyValuePair<string, Vrsta> pair in SpisakVrsta.Vrste)
+                {
+                    pair.Value.Etikete = null;
+                    pair.Value.Etikete = new List<Etiketa>();
+                }
+            }
+        }
+
+        #endregion
+
+        //Metoda koja puni listu stringovima sa imenima vrsta
+        public void setVrsteItems()
+        {
+            this.lista.ItemsSource = null;
+            Vrste = new ObservableCollection<Vrsta>();
+            foreach (Vrsta v in SpisakVrsta.Vrste.Values)
+            {
+                if (NaMapi.Contains(v))
+                {
+                    continue;
+                }
+                Vrste.Add(v);
+            }
+            this.lista.ItemsSource = Vrste;
+        }
 
         #region Import i Export
         private void Export_Click(object sender, RoutedEventArgs e)
@@ -380,51 +421,6 @@ namespace Ugrozene_Vrste
 
         #endregion
 
-        private void BrisanjeSvihVrsta_Click(object sender, RoutedEventArgs e)
-        {
-            String message = "Da li ste sigurni da želite da obrišete sve unete vrste?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih vrsta", MessageBoxButton.YesNo);
-
-            if (mbr == MessageBoxResult.Yes)
-            {
-                SpisakVrsta.Vrste = null;
-                SpisakVrsta.Vrste = new Dictionary<string, Vrsta>();
-                setVrsteItems();
-            }
-        }
-
-        private void BrisanjeSvihTipovaVrste_Click(object sender, RoutedEventArgs e)
-        {
-            String message = "Da li ste sigurni da želite da obrišete sve unete tipove vrsta?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih tipova vrsta", MessageBoxButton.YesNo);
-
-            if (mbr == MessageBoxResult.Yes)
-            {
-                SpisakTipovaVrste.TipoviVrste = null;
-                SpisakTipovaVrste.TipoviVrste = new Dictionary<string, TipVrste>();
-                setVrsteItems();
-            }
-        }
-
-        private void BrisanjeSvihEtiketa_Click(object sender, RoutedEventArgs e)
-        {
-            String message = "Da li ste sigurni da želite da obrišete sve unete etikete?\n\n";
-            MessageBoxResult mbr = MessageBox.Show(message, "Brisanje svih etiketa", MessageBoxButton.YesNo);
-
-            if (mbr == MessageBoxResult.Yes)
-            {
-                SpisakEtiketa.Etikete = null;
-                SpisakEtiketa.Etikete = new Dictionary<string, Etiketa>();
-
-                foreach (KeyValuePair<string, Vrsta> pair in SpisakVrsta.Vrste)
-                {
-                    pair.Value.Etikete = null;
-                    pair.Value.Etikete = new List<Etiketa>();
-                }
-            }
-        }
-
-
         #region Drag and Drop
         private void Lista_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -470,16 +466,16 @@ namespace Ugrozene_Vrste
             {
 
                 Vrsta vrsta = e.Data.GetData("ugrozeniDrag") as Vrsta;
-                Console.WriteLine("Dropovan " + vrsta.Ime);
+                //Console.WriteLine("Dropovan " + vrsta.Ime);
 
-                //kod za proveru
+                //Provera
                 //lok.Point = e.GetPosition(Mapa);
 
                 double newLeft = e.GetPosition(Mapa).X;
                 // newLeft inside canvas right-border?
-                if (newLeft > Mapa.Margin.Left + Mapa.ActualWidth - 40)
+                if (newLeft > Mapa.Margin.Left + Mapa.ActualWidth - 30)
                 {
-                    newLeft = Mapa.Margin.Left + Mapa.ActualWidth - 20;  //20 je sirina slike
+                    newLeft = Mapa.Margin.Left + Mapa.ActualWidth - 30;  //30 je sirina slike
                 }
                 // newLeft inside canvas left-border?
                 else if (newLeft < Mapa.Margin.Left)
@@ -490,9 +486,9 @@ namespace Ugrozene_Vrste
                 double newTop = e.GetPosition(Mapa).Y;
 
                 // newTop inside canvas bottom-border?
-                if (newTop > Mapa.Margin.Top + Mapa.ActualHeight - 20)
+                if (newTop > Mapa.Margin.Top + Mapa.ActualHeight - 30)
                 {
-                    newTop = Mapa.Margin.Top + Mapa.ActualHeight - 20; //20 je visina slike 
+                    newTop = Mapa.Margin.Top + Mapa.ActualHeight - 30; //30 je visina slike 
                 }
                 // newTop inside canvas top-border?
                 else if (newTop < Mapa.Margin.Top)
@@ -506,48 +502,42 @@ namespace Ugrozene_Vrste
                 foreach (Vrsta v in NaMapi)
                 {
                     //da li se novi sece po x osi
-                    if (Math.Abs(vrsta.Point.X - v.Point.X) < 20) //ako su u preseku
+                    if (Math.Abs(vrsta.Point.X - v.Point.X) < 30) //ako su u preseku
                     {
                         if (Mapa.ActualWidth - vrsta.Point.X < Mapa.ActualWidth - v.Point.X) //ako je prevlaceni blizi levo
                         {
-                            vrsta.Point = new Point(newLeft - 30, newTop);
+                            vrsta.Point = new Point(newLeft - 40, newTop);
                         }
                         else if (Mapa.ActualWidth - vrsta.Point.X > Mapa.ActualWidth - v.Point.X) //ako je prevlaceni blizi desno
                         {
-                            vrsta.Point = new Point(newLeft + 30, newTop);
+                            vrsta.Point = new Point(newLeft + 40, newTop);
                         }
                     }
 
                     //da li se novi sece po y osi
-                    if (Math.Abs(vrsta.Point.Y - v.Point.Y) < 20) //ako su u preseku
+                    if (Math.Abs(vrsta.Point.Y - v.Point.Y) < 30) //ako su u preseku
                     {
                         if (Mapa.ActualHeight - vrsta.Point.Y < Mapa.ActualHeight - v.Point.Y) //ako je prevlaceni blizi gore 
                         {
-                            vrsta.Point = new Point(vrsta.Point.X, newTop - 30);
+                            vrsta.Point = new Point(vrsta.Point.X, newTop - 40);
                         }
                         else if (Mapa.ActualHeight - vrsta.Point.Y > Mapa.ActualHeight - v.Point.Y) //ako je prevlaceni blizi dole
                         {
-                            vrsta.Point = new Point(vrsta.Point.X, newTop + 30);
+                            vrsta.Point = new Point(vrsta.Point.X, newTop + 40);
                         }
                     }
-
                 }
-                
+
                 if (NaMapi.Contains(vrsta) == false)
                 {
                     NaMapi.Add(vrsta);
                 }
                 
-                //observable vezana za listu iz mape
                 Console.WriteLine(NaMapi.Count);
                 isDragging = false;
             }
         }
-
-        private void Mapa_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
+        
 
         private void Mapa_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -556,6 +546,34 @@ namespace Ugrozene_Vrste
                 Vrsta v = Mapa.SelectedItem as Vrsta;
                 var w = new RadSaVrstom(this, true, v);
                 w.ShowDialog();
+            }
+        }
+
+        private void NaMapi_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !isDragging)
+            {
+                Point position = e.GetPosition(null);
+                if (Math.Abs(position.X - startPoint.X) > SystemParameters.MinimumHorizontalDragDistance || Math.Abs(position.Y - startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                {
+                    StartDragMap(e);
+                }
+            }
+        }
+
+        //funkcija koja zapravo pokrene drag sa mape
+        private void StartDragMap(MouseEventArgs e)
+        {
+            if (Mapa.SelectedItem is Vrsta) //zbog null, ako je neko krenuo da vuce po mapi bezveze
+            {
+                isDragging = true;
+                Vrsta selectedItem = (Vrsta)Mapa.SelectedItem;
+                ListBoxItem lwi = (ListBoxItem)Mapa.ItemContainerGenerator.ContainerFromItem(selectedItem);
+                // Initialize the drag & drop operation
+                DataObject dragData = new DataObject("ugrozeniDrag", selectedItem);
+                if (isDragging == true)
+                    DragDrop.DoDragDrop(lwi, dragData, DragDropEffects.Move);
+                isDragging = false;
             }
         }
 

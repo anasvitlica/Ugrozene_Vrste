@@ -265,38 +265,41 @@
                     </ListView>
                 </DockPanel>
             </StackPanel>
-            <ListBox ToolTip="Prevucite vrstu iz liste levo na mapu."
+
+            <StackPanel Orientation="Horizontal" Background="{StaticResource TransparentWhite}">
+                <ListBox ToolTip="Prevucite vrstu iz liste levo na mapu."
                          x:Name="Mapa" MinWidth="970" MinHeight="580" 
                          SelectionMode="Single" ItemsSource="{Binding Path= NaMapi}"  
                          AllowDrop="True" DragEnter="Mapa_DragEnter" Drop="Mapa_Drop" 
                          PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
-                         PreviewMouseMove="Mapa_PreviewMouseMove"
+                         PreviewMouseMove="NaMapi_PreviewMouseMove"
                          MouseDoubleClick="Mapa_MouseDoubleClick">
-                <ListBox.Template>
-                    <ControlTemplate TargetType="{x:Type ListBox}">
-                        <Canvas x:Name="CanvasPanel" IsItemsHost="True">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="Images/worldMap1.png"/>
-                            </Canvas.Background>
-                        </Canvas>
-                    </ControlTemplate>
-                </ListBox.Template >
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Canvas.Left" Value="{Binding Point.X}"></Setter>
-                        <Setter Property="Canvas.Top" Value="{Binding Point.Y}"></Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Grid>
-                                <Image Width="20" Height="20" Source="{Binding Ikonica}" VerticalAlignment="Center" />
-                            </Grid>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <Canvas x:Name="CanvasPanel" IsItemsHost="True">
+                                <Canvas.Background>
+                                    <ImageBrush ImageSource="Images/worldMap1.png"/>
+                                </Canvas.Background>
+                            </Canvas>
+                        </ControlTemplate>
+                    </ListBox.Template >
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Canvas.Left" Value="{Binding Point.X}"></Setter>
+                            <Setter Property="Canvas.Top" Value="{Binding Point.Y}"></Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                <Grid>
+                                    <Image Width="30" Height="30" Source="{Binding Ikonica}" VerticalAlignment="Center" />
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
 
         </StackPanel>
 
