@@ -74,7 +74,7 @@ namespace Ugrozene_Vrste
             DDHandler = new DragAndDropHandler(this);
 
             //punjenje liste
-            setVrsteItems();
+            SetVrsteItems();
         }
 
         #region Clicks
@@ -145,7 +145,7 @@ namespace Ugrozene_Vrste
             {
                 SpisakEtiketa.Etikete.Remove(etiketa.ID);
             }
-            this.setVrsteItems();
+            this.SetVrsteItems();
         }
 
         private void Lista_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -168,7 +168,7 @@ namespace Ugrozene_Vrste
             {
                 SpisakVrsta.Vrste = null;
                 SpisakVrsta.Vrste = new Dictionary<string, Vrsta>();
-                setVrsteItems();
+                SetVrsteItems();
             }
         }
 
@@ -181,7 +181,7 @@ namespace Ugrozene_Vrste
             {
                 SpisakTipovaVrste.TipoviVrste = null;
                 SpisakTipovaVrste.TipoviVrste = new Dictionary<string, TipVrste>();
-                setVrsteItems();
+                SetVrsteItems();
             }
         }
 
@@ -206,18 +206,10 @@ namespace Ugrozene_Vrste
         #endregion
 
         //Metoda koja puni listu stringovima sa imenima vrsta
-        public void setVrsteItems()
+        public void SetVrsteItems()
         {
             this.lista.ItemsSource = null;
-            Vrste = new ObservableCollection<Vrsta>();
-            foreach (Vrsta v in SpisakVrsta.Vrste.Values)
-            {
-                if (NaMapi.Contains(v))
-                {
-                    continue;
-                }
-                Vrste.Add(v);
-            }
+            Vrste = new ObservableCollection<Vrsta>(SpisakVrsta.Vrste.Values);
             this.lista.ItemsSource = Vrste;
         }
 
@@ -238,16 +230,16 @@ namespace Ugrozene_Vrste
                 {
                     using (TextWriter tw = new StreamWriter(fs))
                     {
-                        export_Vrste(tw, FileName);
-                        export_TipoviVrste(tw, FileName);
-                        export_Etikete(tw, FileName);
+                        Export_Vrste(tw, FileName);
+                        Export_TipoviVrste(tw, FileName);
+                        Export_Etikete(tw, FileName);
                     }
                 }
             }
 
         }
 
-        private void export_Etikete(TextWriter tw, string file)
+        private void Export_Etikete(TextWriter tw, string file)
         {
             foreach (KeyValuePair<String, Etiketa> kvp in SpisakEtiketa.Etikete)
             {
@@ -255,7 +247,7 @@ namespace Ugrozene_Vrste
             }
         }
 
-        private void export_TipoviVrste(TextWriter tw, string file)
+        private void Export_TipoviVrste(TextWriter tw, string file)
         {
             foreach (KeyValuePair<string, TipVrste> kvp in SpisakTipovaVrste.TipoviVrste)
             {
@@ -263,7 +255,7 @@ namespace Ugrozene_Vrste
             }
         }
 
-        private void export_Vrste(TextWriter tw, string file)
+        private void Export_Vrste(TextWriter tw, string file)
         {
             foreach (KeyValuePair<string, Vrsta> kvp in SpisakVrsta.Vrste)
             {
@@ -276,7 +268,15 @@ namespace Ugrozene_Vrste
             }
         }
 
-        private void import(System.IO.StreamReader sr, string file)
+        private void DodajNaMapu(Vrsta v)
+        {
+            if(v.Point.X != 0 && v.Point.Y != 0)
+            {
+                NaMapi.Add(v);
+            }
+        }
+
+        private void Import(System.IO.StreamReader sr, string file)
         {
 
             using (sr)
@@ -314,7 +314,13 @@ namespace Ugrozene_Vrste
                             }
                             ImageSource ikonica = new BitmapImage(new Uri(urlIkonice, UriKind.RelativeOrAbsolute));
 
-                            SpisakVrsta.Vrste.Add(id, new Vrsta(id,                          //id
+                            Point p = new Point();
+                            string pointStr = splitted[13];
+                            string[] coordsStr = pointStr.Split(',');
+                            p.X = double.Parse(coordsStr[0]);
+                            p.Y = double.Parse(coordsStr[1]);
+
+                            Vrsta ucitanaVrsta = new Vrsta(id,                          //id
                                                             splitted[1].Trim(),              //ime
                                                             splitted[2].Trim(),              //opis
                                                             splitted[3].Trim(),              //status ugrozenosti
@@ -325,7 +331,13 @@ namespace Ugrozene_Vrste
                                                             Double.Parse(splitted[8].Trim()),//prihod
                                                             splitted[9].Trim(),              //datum
                                                             ikonica,                        //ikonica
-                                                            splitted[11].Trim()));           //tip
+                                                            splitted[11].Trim(),            //tip
+                                                            p);                            //koordinate na mapi       
+
+                            SpisakVrsta.Vrste.Add(id, ucitanaVrsta);
+
+                            DodajNaMapu(ucitanaVrsta);
+
                         }
                         else if (id.StartsWith("TIPVRSTE"))
                         {
@@ -385,7 +397,7 @@ namespace Ugrozene_Vrste
                 }
             }
 
-            setVrsteItems();
+            SetVrsteItems();
 
         }
 
@@ -413,7 +425,7 @@ namespace Ugrozene_Vrste
                 SpisakEtiketa.Etikete = null;
                 SpisakEtiketa.Etikete = new Dictionary<string, Etiketa>();
 
-                import(sr, dlg.FileName);
+                Import(sr, dlg.FileName);
 
             }
 
@@ -422,6 +434,12 @@ namespace Ugrozene_Vrste
         #endregion
 
         #region Drag and Drop
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
         private void Lista_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             startPoint = e.GetPosition(null);
@@ -443,12 +461,15 @@ namespace Ugrozene_Vrste
         {
             isDragging = true;
             Vrsta selectedItem = (Vrsta)lista.SelectedItem;
-            DataObject dragData = new DataObject("ugrozeniDrag", selectedItem);
-            if (isDragging == true)
+            if(selectedItem != null)
             {
-                DragDrop.DoDragDrop(lista, dragData, DragDropEffects.Move);
+                DataObject dragData = new DataObject("ugrozeniDrag", selectedItem);
+                if (isDragging == true)
+                {
+                    DragDrop.DoDragDrop(lista, dragData, DragDropEffects.Move);
+                }
             }
-
+            
             isDragging = false;
         }
 
@@ -532,12 +553,12 @@ namespace Ugrozene_Vrste
                 {
                     NaMapi.Add(vrsta);
                 }
-                
+
                 Console.WriteLine(NaMapi.Count);
                 isDragging = false;
             }
         }
-        
+
 
         private void Mapa_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -564,6 +585,7 @@ namespace Ugrozene_Vrste
         //funkcija koja zapravo pokrene drag sa mape
         private void StartDragMap(MouseEventArgs e)
         {
+
             if (Mapa.SelectedItem is Vrsta) //zbog null, ako je neko krenuo da vuce po mapi bezveze
             {
                 isDragging = true;
@@ -572,8 +594,20 @@ namespace Ugrozene_Vrste
                 // Initialize the drag & drop operation
                 DataObject dragData = new DataObject("ugrozeniDrag", selectedItem);
                 if (isDragging == true)
+                {
                     DragDrop.DoDragDrop(lwi, dragData, DragDropEffects.Move);
+                }
+
                 isDragging = false;
+            }
+        }
+
+        private void ButtonBrisanje_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("ugrozeniDrag"))
+            {
+                Vrsta vrsta = e.Data.GetData("ugrozeniDrag") as Vrsta;
+                NaMapi.Remove(vrsta);
             }
         }
 

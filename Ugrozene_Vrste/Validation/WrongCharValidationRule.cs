@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace Ugrozene_Vrste.Validation
@@ -15,18 +10,13 @@ namespace Ugrozene_Vrste.Validation
             try
             {
                 var s = value as string;
-                
-                if (s.Contains("?") || s.Contains(".") || s.Contains(",") || s.Contains("/") ||
-                    s.Contains(">") || s.Contains("<") || s.Contains("|") || s.Contains("!") ||
-                    s.Contains("@") || s.Contains("#") || s.Contains("$") || s.Contains("%") ||
-                    s.Contains("^") || s.Contains("&") || s.Contains("*") || s.Contains("(") ||
-                    s.Contains(")") || s.Contains("_") || s.Contains("-") || s.Contains("=") ||
-                    s.Contains("+") || s.Contains("}") || s.Contains("{") || s.Contains("]") ||
-                    s.Contains("[") || s.Contains("\\")|| s.Contains("`") || s.Contains("~"))
+                Regex r = new Regex("^[a-zA-Z0-9]+$");
+
+                if (!r.IsMatch(s))
                 {
                     return new ValidationResult(false, "Uneli ste nedozvoljen karakter!");
-                } 
-                else if (s.Equals(""))
+                }
+                else if (s.Equals("") || s==null)
                 {
                     return new ValidationResult(false, "Polje je obavezno!");
                 }

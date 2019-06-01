@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace Ugrozene_Vrste.Model
@@ -17,11 +18,11 @@ namespace Ugrozene_Vrste.Model
                 {
                     vrste = new Dictionary<string, Vrsta>();
                     vrste.Add("123", new Vrsta("123", "Polarni medved", "Beli", "", true, true, false, "", 50000, "",
-                        new BitmapImage(new Uri("images/polarnimedved.png", UriKind.Relative)), "Sisar"));
+                        new BitmapImage(new Uri("images/polarnimedved.png", UriKind.Relative)), "Sisar", new Point(0,0)));
                     vrste.Add("456", new Vrsta("456", "Afrički slon", "Veliki", "", true, true, false, "", 70000, "",
-                        new BitmapImage(new Uri("images/AfricanElephant1.png", UriKind.Relative)), "Sisar"));
+                        new BitmapImage(new Uri("images/AfricanElephant1.png", UriKind.Relative)), "Sisar", new Point(0, 0)));
                     vrste.Add("789", new Vrsta("789", "Tigar", "Straftasti", "", true, true, false, "", 100000, "",
-                        new BitmapImage(new Uri("images/tiger1.png", UriKind.Relative)), "Sisar"));
+                        new BitmapImage(new Uri("images/tiger1.png", UriKind.Relative)), "Sisar", new Point(0, 0)));
 
                 }
                 return vrste;

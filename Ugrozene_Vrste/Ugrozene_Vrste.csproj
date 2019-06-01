@@ -77,13 +77,13 @@
     </Compile>
     <Compile Include="JavaScriptControlHelper.cs" />
     <Compile Include="Model\SpisakEtiketa.cs" />
-    <Compile Include="View\Pregled.xaml.cs">
+    <Compile Include="Pregled.xaml.cs">
       <DependentUpon>Pregled.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RadSaEtiketom.xaml.cs">
+    <Compile Include="RadSaEtiketom.xaml.cs">
       <DependentUpon>RadSaEtiketom.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RadSaTipomVrste.xaml.cs">
+    <Compile Include="RadSaTipomVrste.xaml.cs">
       <DependentUpon>RadSaTipomVrste.xaml</DependentUpon>
     </Compile>
     <Compile Include="RadSaVrstom.xaml.cs">
@@ -102,15 +102,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Pregled.xaml">
+    <Page Include="Pregled.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RadSaEtiketom.xaml">
+    <Page Include="RadSaEtiketom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RadSaTipomVrste.xaml">
+    <Page Include="RadSaTipomVrste.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -226,7 +226,9 @@
   <ItemGroup>
     <Resource Include="images\pawbw11.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="View\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="images\check.png" />
   </ItemGroup>
@@ -264,6 +266,7 @@
   <ItemGroup>
     <Content Include="Help\error.htm" />
     <Content Include="Help\pocetna.htm" />
+    <Resource Include="images\leftright.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -103,7 +103,6 @@
             <Setter Property="FontFamily" Value="MS Gothic"/>
             <Setter Property="FontStyle" Value="Oblique" />
             <Setter Property="Margin" Value="3"/>
-
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
@@ -388,7 +387,7 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <WrapPanel Height="24">
-                                        <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        <TextBlock Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                         <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                         FontSize="14" Foreground="Black" FontFamily="MS Gothic" FontStyle ="Oblique" />
                                     </WrapPanel>
@@ -397,7 +396,7 @@
                         </ListBox>
                         <Button Height="30" Width="30" Style="{DynamicResource RoundCorner}" Click="PrebaciEtiketu_Click" ToolTip="Dodavanje označene etikete">
                             <StackPanel Orientation="Horizontal">
-                                <Image Height="20" Source="images/arrowRight.png"/>
+                                <Image Height="20" Source="images/leftright.png"/>
                             </StackPanel>
                         </Button>
                         <ListBox x:Name="listaEtiketa" Height="100" Width="120" Margin="3" 
@@ -407,27 +406,13 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <WrapPanel Height="24">
-                                        <TextBox Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        <TextBlock Background="{Binding BojaBrush}" Width="40" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                         <Label Content="{Binding ID}" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                         FontSize="14" Foreground="Black" FontFamily="MS Gothic" FontStyle ="Oblique" />
                                     </WrapPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                    </StackPanel>
-                    
-
-                    <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Height="30" Width="30" Style="{DynamicResource RoundCorner}" Click="DodajEtiketu_Click">
-                            <StackPanel Orientation="Horizontal" ToolTip="Kreiranje nove etikete">
-                                <Image Height="20" Source="images/add.png"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Height="30" Width="30" Style="{DynamicResource RoundCorner}" Margin="5,0,0,0" Click="ObrisiEtiketu_Click">
-                            <StackPanel Orientation="Horizontal" ToolTip="Brisanje dodate etikete">
-                                <Image Height="20" Source="images/delete.png"/>
-                            </StackPanel>
-                        </Button>
                     </StackPanel>
                     
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Ikonica:" Style="{StaticResource ResourceKey=TextBlockStyle}" 

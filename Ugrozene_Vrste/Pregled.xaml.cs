@@ -99,7 +99,7 @@ namespace Ugrozene_Vrste
 
         private void Nazad_Click(object sender, RoutedEventArgs e)
         {
-            ParentWindow.setVrsteItems();
+            ParentWindow.SetVrsteItems();
             this.Close();
         }
 

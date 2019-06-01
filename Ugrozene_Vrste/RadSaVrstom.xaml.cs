@@ -26,7 +26,7 @@ namespace Ugrozene_Vrste
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
-        
+
 
         public bool Editing { get; set; }
         public Vrsta Selektovan { get; set; }
@@ -61,7 +61,7 @@ namespace Ugrozene_Vrste
             }
             set
             {
-                if(value != _prihod)
+                if (value != _prihod)
                 {
                     _prihod = value;
                     OnPropertyChanged("Prihod");
@@ -232,7 +232,7 @@ namespace Ugrozene_Vrste
                     OnPropertyChanged("Ikonica");
                 }
             }
-        }       
+        }
 
 
         public RadSaVrstom(Window parent, bool edit, Vrsta sel)
@@ -245,19 +245,19 @@ namespace Ugrozene_Vrste
 
             ParWindow = parent;
             this.Owner = parent;
-            
-            
+
+
             TipoviVrsteString = new ObservableCollection<string>();
             foreach (TipVrste tip in SpisakTipovaVrste.TipoviVrste.Values)
             {
                 TipoviVrsteString.Add(tip.Ime);
             }
 
-            if(TipoviVrsteString.Count > 0)
+            if (TipoviVrsteString.Count > 0)
             {
                 Tip = TipoviVrsteString[0];
             }
-            
+
 
             StatusUgrozenosti = new ObservableCollection<string>();
             StatusUgrozenosti.Add("Kritično ugrožena");
@@ -283,11 +283,11 @@ namespace Ugrozene_Vrste
                 txtID.IsEnabled = false;        //ID se ne moze menjati
                 NapuniEtikete();
             }
-            
-            
+
+
         }
 
-        
+
         private void NapuniEtikete()
         {
             Etikete = null;
@@ -296,7 +296,7 @@ namespace Ugrozene_Vrste
             {
                 Etikete.Add(etiketa);
             }
-             listaEtiketa.ItemsSource = Etikete;
+            listaEtiketa.ItemsSource = Etikete;
 
             SveEtikete = null;
             SveEtikete = new ObservableCollection<Etiketa>(SpisakEtiketa.Etikete.Values);
@@ -307,10 +307,12 @@ namespace Ugrozene_Vrste
                     SveEtikete.Remove(e);
                 }
                 else
+                {
                     continue;
+                }
             }
             listaSvihEtiketa.ItemsSource = SveEtikete;
-            
+
         }
 
         public void dodajEtiketu(Etiketa e)
@@ -375,8 +377,8 @@ namespace Ugrozene_Vrste
             {
                 MessageBox.Show("Popunite sva obavezna polja!", "Greška");
                 return;
-            } 
-            else if (SpisakVrsta.Vrste.ContainsKey(ID) && Editing==false)
+            }
+            else if (SpisakVrsta.Vrste.ContainsKey(ID) && Editing == false)
             {
                 MessageBox.Show("ID već postoji!", "Pogrešan ID");
                 return;
@@ -418,36 +420,35 @@ namespace Ugrozene_Vrste
                     }
                     IkonicaP = SpisakTipovaVrste.TipoviVrste[idTipa].Ikonica;
                 }
-                    
 
-                    //neobavezna polja
-                    if (Opis == null)
-                    {
-                        Opis = "";
-                    }
+
+                //neobavezna polja
+                if (Opis == null)
+                {
+                    Opis = "";
+                }
 
                 Vrsta novaVrsta = new Vrsta(ID, Ime, Opis, Status, Opasna, Lista, Naseljena,
-                Turisticki, Prihod, Datum, IkonicaP, Tip);
+                Turisticki, Prihod, Datum, IkonicaP, Tip, new Point(0, 0));
                 novaVrsta.Etikete = new List<Etiketa>();
                 foreach (Etiketa etiketa in this.Etikete)
                 {
                     novaVrsta.Etikete.Add(etiketa);
                 }
-                    SpisakVrsta.Vrste.Add(ID,novaVrsta);
-                }
-                
-            
+                SpisakVrsta.Vrste.Add(ID, novaVrsta);
+            }
 
             //Refresh liste u parent prozoru
             if (ParWindow is MainWindow)
             {
                 MainWindow pw = (MainWindow)Owner;
-                pw.setVrsteItems();
+                pw.SetVrsteItems();
                 //(ParWindow as MainWindow).setVrsteItems();
-            } else if(ParWindow is Pregled)
+            }
+            else if (ParWindow is Pregled)
             {
                 Pregled parentWindow = (Pregled)Owner;
-                parentWindow.dodajVrstu(new Vrsta(ID,Ime,Opis,Status,Opasna,Lista,Naseljena,Turisticki,Prihod,Datum,IkonicaP,Tip));
+                parentWindow.dodajVrstu(new Vrsta(ID, Ime, Opis, Status, Opasna, Lista, Naseljena, Turisticki, Prihod, Datum, IkonicaP, Tip, new Point(0, 0)));
             }
 
             Selektovan = null;
@@ -460,8 +461,8 @@ namespace Ugrozene_Vrste
         {
             OpenFileDialog dlg = new OpenFileDialog
             {
-                FileName = "File", 
-                DefaultExt = ".png", 
+                FileName = "File",
+                DefaultExt = ".png",
                 Filter = "All Images Files (*.png;*.jpeg;*.gif;*.jpg;*.bmp;*.tiff;*.tif)|*.png;*.jpeg;*.gif;*.jpg;*.bmp;*.tiff;*.tif" +
                 "|PNG Portable Network Graphics (*.png)|*.png" +
                 "|JPEG File Interchange Format (*.jpg *.jpeg *jfif)|*.jpg;*.jpeg;*.jfif" +
@@ -469,9 +470,9 @@ namespace Ugrozene_Vrste
                 "|TIF Tagged Imaged File Format (*.tif *.tiff)|*.tif;*.tiff" +
                 "|GIF Graphics Interchange Format (*.gif)|*.gif"
             };
-            
+
             Nullable<bool> result = dlg.ShowDialog();
-            
+
             if (result == true)
             {
                 txtIKONICA.Text = dlg.FileName;
@@ -481,8 +482,7 @@ namespace Ugrozene_Vrste
             }
         }
 
-        
-
+        #region Focus
         private void TxtTIP_GotFocus(object sender, RoutedEventArgs e)
         {
             borderTIP.BorderBrush = Brushes.Blue;
@@ -532,6 +532,8 @@ namespace Ugrozene_Vrste
             borderNASELJE.BorderBrush = null;
         }
 
+        #endregion
+
         // Za datepicker nece
         private void DDATUM_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -541,12 +543,10 @@ namespace Ugrozene_Vrste
         {
             borderDATUM.BorderBrush = null;
         }
-
-
-
+        
         private void DodajEtiketu_Click(object sender, RoutedEventArgs e)
         {
-            RadSaEtiketom re = new RadSaEtiketom(this,false,null);
+            RadSaEtiketom re = new RadSaEtiketom(this, false, null);
             re.ShowDialog();
         }
 
@@ -554,7 +554,7 @@ namespace Ugrozene_Vrste
         {
             Etiketa selektovana = (Etiketa)listaEtiketa.SelectedItem;
 
-            if(selektovana == null)
+            if (selektovana == null)
             {
                 MessageBox.Show("Označite iz liste etiketu koju želite da izbrišete!");
                 return;
@@ -562,7 +562,7 @@ namespace Ugrozene_Vrste
 
             Etikete.Remove(selektovana);
 
-            foreach (KeyValuePair<string,Etiketa> pair in SpisakEtiketa.Etikete)    //brisanje iz spiska etiketa
+            foreach (KeyValuePair<string, Etiketa> pair in SpisakEtiketa.Etikete)    //brisanje iz spiska etiketa
             {
                 if (pair.Key.Equals(selektovana.ID))
                 {
@@ -572,15 +572,28 @@ namespace Ugrozene_Vrste
             }
 
             Selektovan.Etikete.Remove(selektovana);
-            
+
             NapuniEtikete();
         }
 
         private void PrebaciEtiketu_Click(object sender, RoutedEventArgs e)
         {
-            Etiketa selektovana = (Etiketa)listaSvihEtiketa.SelectedItem;
-            SveEtikete.Remove(selektovana);
-            Etikete.Add(selektovana);
+            if((Etiketa)listaSvihEtiketa.SelectedItem != null)
+            {
+                Etiketa selektovana = (Etiketa)listaSvihEtiketa.SelectedItem;
+                SveEtikete.Remove(selektovana);
+                Etikete.Add(selektovana);
+            }
+            else if((Etiketa)listaEtiketa.SelectedItem != null)
+            {
+                Etiketa selektovana = (Etiketa)listaEtiketa.SelectedItem;
+                SveEtikete.Add(selektovana);
+                Etikete.Remove(selektovana);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

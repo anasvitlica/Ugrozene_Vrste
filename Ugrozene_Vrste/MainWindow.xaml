@@ -7,7 +7,7 @@
         
         mc:Ignorable="d"
         Title="Ugrožene vrste" Height="680" Width="1200" WindowStartupLocation="CenterScreen"
-        Icon="images/284-512.png" WindowStyle="None" ResizeMode="NoResize">
+        Icon="images/284-512.png"  ResizeMode="NoResize">
 
 
     <Window.Background>
@@ -87,11 +87,7 @@
     </Window.Resources>
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Height="20" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Width="20" Background="Transparent" BorderBrush="Transparent" Click="Exit_Click">
-                <Image Source="images/exit.png"></Image>
-            </Button>
-        </StackPanel>
+        
         <Menu DockPanel.Dock="Top" Background="Transparent" FontFamily="MS Gothic" FontStyle="Oblique">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -224,7 +220,7 @@
                             </Button>
                             <Button Height="30" Width="30" ToolTip="Brisanje vrste"
                                         Background="{StaticResource TransparentWhite}" Margin="0,0,2,0" BorderBrush="Transparent"
-                                        Click="Delete_Click" Style="{DynamicResource RoundCorner}">
+                                        Click="Delete_Click" Style="{DynamicResource RoundCorner}" AllowDrop="True" Drop="ButtonBrisanje_Drop">
                                 <Image Source="images/delete.png" Height="20"></Image>
                             </Button>
                         </StackPanel>
@@ -267,8 +263,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Background="{StaticResource TransparentWhite}">
-                <ListBox ToolTip="Prevucite vrstu iz liste levo na mapu."
-                         x:Name="Mapa" MinWidth="970" MinHeight="580" 
+                <ListBox x:Name="Mapa" MinWidth="970" MinHeight="580"
                          SelectionMode="Single" ItemsSource="{Binding Path= NaMapi}"  
                          AllowDrop="True" DragEnter="Mapa_DragEnter" Drop="Mapa_Drop" 
                          PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown"
@@ -287,6 +282,26 @@
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Canvas.Left" Value="{Binding Point.X}"></Setter>
                             <Setter Property="Canvas.Top" Value="{Binding Point.Y}"></Setter>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Ikonica}" Width="50" Height="50"/>
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding ID}" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="12" />
+                                            <TextBlock Text="{Binding Ime}" FontFamily="MS Gothic" FontStyle="Oblique" FontSize="12"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property = "Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect ShadowDepth="5" Direction="0" Opacity="1" BlurRadius="10" Color="Black"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>

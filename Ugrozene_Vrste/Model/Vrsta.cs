@@ -255,7 +255,8 @@ namespace Ugrozene_Vrste.Model
                      double prihod,
                      string datum,
                      ImageSource ikonica,
-                     string tip)
+                     string tip,
+                     Point p)
         {
             ID = id;
             Ime = ime;
@@ -270,6 +271,7 @@ namespace Ugrozene_Vrste.Model
             Ikonica = ikonica;
             Tip = tip;
             Etikete = new List<Etiketa>();
+            Point = p;
         }
 
         public Vrsta(string id, string ime)
@@ -292,7 +294,8 @@ namespace Ugrozene_Vrste.Model
                    this.Prihod + ";" +
                    this.Datum + ";" +
                    this.Ikonica + ";" +
-                   this.Tip;
+                   this.Tip + ";" +
+                   this.Point;
         }
 
 
