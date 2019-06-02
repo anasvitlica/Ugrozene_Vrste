@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Ugrozene_Vrste
 {
-    class HelpProvider
+    public class HelpProvider
     {
 
         public static string GetHelpKey(DependencyObject obj)

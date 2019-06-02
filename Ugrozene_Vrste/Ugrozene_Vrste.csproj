@@ -265,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\error.htm" />
+    <Content Include="Help\Lista.htm" />
     <Content Include="Help\pocetna.htm" />
     <Resource Include="images\leftright.png" />
   </ItemGroup>

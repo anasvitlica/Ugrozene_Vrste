@@ -10,7 +10,7 @@ namespace Ugrozene_Vrste
 {
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     [ComVisible(true)]
-    class JavaScriptControlHelper
+    public class JavaScriptControlHelper
     {
         MainWindow prozor;
         public JavaScriptControlHelper(MainWindow w)

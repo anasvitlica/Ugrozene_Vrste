@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -151,6 +152,10 @@ namespace Ugrozene_Vrste
         private void Lista_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Vrsta selektovanaVrsta = (Vrsta)lista.SelectedItem;
+            if(selektovanaVrsta == null)
+            {
+                return;
+            }
             if (SpisakVrsta.Vrste.ContainsKey(selektovanaVrsta.ID))
             {
                 RadSaVrstom rsv = new RadSaVrstom(this, true, selektovanaVrsta);
@@ -169,6 +174,8 @@ namespace Ugrozene_Vrste
                 SpisakVrsta.Vrste = null;
                 SpisakVrsta.Vrste = new Dictionary<string, Vrsta>();
                 SetVrsteItems();
+                NaMapi = null;
+                NaMapi = new ObservableCollection<Vrsta>(SpisakVrsta.Vrste.Values);
             }
         }
 
@@ -613,6 +620,16 @@ namespace Ugrozene_Vrste
 
         #endregion
 
-
+        #region Help
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                string str = HelpProvider.GetHelpKey((DependencyObject)focusedControl);
+                HelpProvider.ShowHelp(str, this);
+            }
+        }
+        #endregion
     }
 }

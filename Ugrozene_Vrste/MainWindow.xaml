@@ -9,6 +9,9 @@
         Title="Ugrožene vrste" Height="680" Width="1200" WindowStartupLocation="CenterScreen"
         Icon="images/284-512.png"  ResizeMode="NoResize">
 
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
 
     <Window.Background>
         <ImageBrush ImageSource="images/blurred.jpg"></ImageBrush>
@@ -243,7 +246,8 @@
                                   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                   Background="{StaticResource TransparentWhite}" MouseDoubleClick="Lista_MouseDoubleClick"
-                                  PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown" PreviewMouseMove="Lista_PreviewMouseMove">
+                                  PreviewMouseLeftButtonDown="Lista_PreviewMouseLeftButtonDown" PreviewMouseMove="Lista_PreviewMouseMove"
+                                  l:HelpProvider.HelpKey="Lista">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn>
