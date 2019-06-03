@@ -5,7 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ugrozene_Vrste"
         mc:Ignorable="d"
-        Title="HelpViewer" Height="450" Width="800">
+        Title="HelpViewer" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+    </Window.Resources>
+    
+    <Window.Background>
+        <ImageBrush ImageSource="images/helpNature.jpg"></ImageBrush>
+    </Window.Background>
 
     <Window.CommandBindings>
         <CommandBinding Command="NavigationCommands.BrowseBack" CanExecute="BrowseBack_CanExecute" Executed="BrowseBack_Executed" />
@@ -14,13 +22,27 @@
 
     <DockPanel>
         <ToolBar DockPanel.Dock="Top">
-            <Button Command="NavigationCommands.BrowseBack">
-                Back
+            <Button Command="NavigationCommands.BrowseBack" Width="20" Height="20">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/back1.png"></Image>
+                </StackPanel>
             </Button>
-            <Button Command="NavigationCommands.BrowseForward">
-                Forward
+            <Button Command="NavigationCommands.BrowseForward" Width="20" Height="20">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/forward.png"></Image>
+                </StackPanel>
             </Button>
         </ToolBar>
-        <WebBrowser Name="wbHelp" Navigating="wbHelp_Navigating"></WebBrowser>
+        <DockPanel DockPanel.Dock="Bottom">
+            <StackPanel x:Name="panelStablo" DockPanel.Dock="Left" Orientation="Vertical" Width="200" Background="{StaticResource TransparentWhite}" Margin="5,5,0,5">
+                <TreeView>
+                    <TreeViewItem>
+                        <TextBlock>Unos podataka</TextBlock>
+                    </TreeViewItem>
+                </TreeView>
+            </StackPanel>
+            <WebBrowser Name="wbHelp" DockPanel.Dock="Right" Navigating="wbHelp_Navigating" Margin="5"></WebBrowser>
+        </DockPanel>
+        
     </DockPanel>
 </Window>
