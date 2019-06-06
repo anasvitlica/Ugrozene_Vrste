@@ -268,6 +268,8 @@
     <Content Include="Help\lista.css" />
     <Content Include="Help\Lista.htm" />
     <Content Include="Help\pocetna.htm" />
+    <Resource Include="images\folder.png" />
+    <Resource Include="images\foldero.png" />
     <Resource Include="images\closedBook.png" />
     <Resource Include="images\openBook.png" />
     <Resource Include="images\helpNature.jpg" />

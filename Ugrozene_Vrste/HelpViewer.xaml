@@ -9,8 +9,16 @@
 
     <Window.Resources>
         <SolidColorBrush x:Key="TransparentWhite" Color="White" Opacity="0.5" />
+
+        <BitmapImage x:Key="FolderOpen" UriSource="Images/foldero.png"/>
+        <BitmapImage x:Key="FolderClosed" UriSource="Images/folder.png"/>
+        <Style x:Key="SmallIcon" TargetType="Image">
+            <Setter Property="MaxWidth" Value="16"/>
+            <Setter Property="MaxHeight" Value="16"/>
+            <Setter Property="Margin" Value="1"/>
+        </Style>
     </Window.Resources>
-    
+
     <Window.Background>
         <ImageBrush ImageSource="images/helpNature.jpg"></ImageBrush>
     </Window.Background>
@@ -35,14 +43,14 @@
         </ToolBar>
         <DockPanel DockPanel.Dock="Bottom">
             <StackPanel x:Name="panelStablo" DockPanel.Dock="Left" Orientation="Vertical" Width="200" Background="{StaticResource TransparentWhite}" Margin="5,5,0,5">
-                <TreeView>
-                    <TreeViewItem>
-                        <TextBlock>Unos podataka</TextBlock>
-                    </TreeViewItem>
+                <TreeView Name="stablo">
+                    <!--TODO-->
                 </TreeView>
             </StackPanel>
+
+
             <WebBrowser Name="wbHelp" DockPanel.Dock="Right" Navigating="wbHelp_Navigating" Margin="5"></WebBrowser>
         </DockPanel>
-        
+
     </DockPanel>
 </Window>
