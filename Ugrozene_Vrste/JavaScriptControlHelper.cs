@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Ugrozene_Vrste
 {
-
     //DOBRA VERZIJA
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     [ComVisible(true)]
